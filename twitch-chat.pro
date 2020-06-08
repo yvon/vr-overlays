@@ -1,5 +1,5 @@
 TEMPLATE = app
-QT += webenginewidgets
+QT += webenginewidgets gui
 SOURCES += main.cpp
 INCLUDEPATH += C:\Users\Yvon\Documents\openvr\headers
-LIBS += C:/Users/Yvon/Documents/openvr/lib/win64/openvr_api.lib
+LIBS += C:/Users/Yvon/Documents/openvr/lib/win64/openvr_api.lib opengl32.lib
