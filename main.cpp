@@ -41,15 +41,15 @@ int main(int argc, char** argv) {
     handle = new VROverlayHandle_t();
 
     VROverlay()->CreateOverlay("image", "image", handle); /* key has to be unique, name doesn't matter */
-    VROverlay()->SetOverlayWidthInMeters(*handle, 3);
+    VROverlay()->SetOverlayWidthInMeters(*handle, 0.2);
     VROverlay()->ShowOverlay(*handle);
 
     vr::HmdMatrix34_t transform = {
         1.0f, 0.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f, 1.0f,
-        0.0f, 0.0f, 1.0f, -2.0f
+        0.0f, 1.0f, 0.0f, -0.25f, // Height
+        0.0f, -0.4f, 1.0f, -0.3f // Depth
     };
-    VROverlay()->SetOverlayTransformAbsolute(*handle, TrackingUniverseStanding, &transform);
+    VROverlay()->SetOverlayTransformAbsolute(*handle, TrackingUniverseSeated, &transform);
 
     QTimer timer;
     timer.setInterval(1000 / 30); // Apprx. 30FPS
