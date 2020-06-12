@@ -1,5 +1,6 @@
-
 #include "overlay.h"
+
+std::vector<class Overlay *> Overlay::instances;
 
 Overlay::Overlay(const char *key, const char *url, int width, int height, vr::HmdMatrix34_t transform)
 {
@@ -23,14 +24,16 @@ Overlay::Overlay(const char *key, const char *url, int width, int height, vr::Hm
     vr::VROverlay()->ShowOverlay(*handle);
     vr::VROverlay()->SetOverlayTransformAbsolute(*handle, vr::TrackingUniverseSeated, &transform);
 
-    timer = new QTimer(this);
-    timer->setInterval(100);
-    connect(timer, SIGNAL(timeout()), this, SLOT(RefreshSlot()));
-
-    timer->start();
+    instances.push_back(this);
 }
 
-void Overlay::RefreshSlot() {
+void Overlay::refreshAll() {
+    for(Overlay *overlay : instances) {
+        overlay->refresh();
+    }
+}
+
+void Overlay::refresh() {
     delete texture;
 
     QImage image = view->grab().toImage();

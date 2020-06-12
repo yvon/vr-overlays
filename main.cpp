@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QTimer>
 #include <openvr.h>
 
 #include "overlay.h"
@@ -17,17 +18,29 @@ int main(int argc, char** argv) {
 
     new Overlay("twitch", "http://localhost:8080/ui/#/chatoverlays/twitch", 550, 300,
     {{
-         {1.0f, 0.0f, 0.0f, 0.0f},
+         {1.0f, 0.0f, 0.0f, 0.3f},
          {0.0f, 1.0f, 0.0f, -0.25f},
-         {0.0f, -0.4f, 1.0f, -0.3f}
+         {0.0f, 0.0f, 1.0f, -0.4f}
      }});
 
     new Overlay("relatives", "http://localhost:8080/ui/#/overlays/relative", 450, 214,
     {{
-         {1.0f, 0.0f, 0.0f, 0.3f},
-         {0.0f, 1.0f, 0.0f, -0.1f},
+         {1.0f, 0.0f, 0.0f, -0.3f},
+         {0.0f, 1.0f, 0.0f, -0.2f},
          {0.0f, 0.0f, 1.0f, -0.4f}
      }});
+
+    new Overlay("standings", "http://localhost:8080/ui/#/overlays/standings", 450, 300,
+    {{
+         {1.0f, 0.0f, 0.0f, -0.3f},
+         {0.0f, 1.0f, 0.0f, -0.35f},
+         {0.0f, 0.0f, 1.0f, -0.4f}
+     }});
+
+    QTimer timer;
+    timer.setInterval(100);
+    timer.callOnTimeout(Overlay::refreshAll);
+    timer.start();
 
     return app.exec();
 }
