@@ -4,6 +4,10 @@ std::vector<class Overlay *> Overlay::instances;
 
 Overlay::Overlay(const char *key, const char *url, int width, int height, vr::HmdMatrix34_t transform)
 {
+    this->key = key;
+    this->width = width;
+    this->height = height;
+
     view = new QWebEngineView();
     handle = new vr::VROverlayHandle_t();
 
@@ -25,6 +29,16 @@ Overlay::Overlay(const char *key, const char *url, int width, int height, vr::Hm
     vr::VROverlay()->SetOverlayTransformAbsolute(*handle, vr::TrackingUniverseSeated, &transform);
 
     instances.push_back(this);
+
+    QImage image = view->grab().toImage();
+
+    texture = new QOpenGLTexture(image.mirrored());
+
+    vrTexture = new vr::Texture_t({(void*)(uintptr_t)texture->textureId(),
+                                   vr::TextureType_OpenGL,
+                                   vr::ColorSpace_Auto});
+
+    vr::VROverlay()->SetOverlayTexture(*handle, vrTexture);
 }
 
 void Overlay::refreshAll() {
@@ -34,10 +48,26 @@ void Overlay::refreshAll() {
 }
 
 void Overlay::refresh() {
-    delete texture;
+    // Capture page snapshot
+    QImage image = view->grab().toImage().mirrored().convertToFormat(QImage::Format_RGBA8888);
 
-    QImage image = view->grab().toImage();
-    texture = new QOpenGLTexture(image.mirrored());
-    vr::Texture_t myTexture = {(void*)(uintptr_t)texture->textureId(), vr::TextureType_OpenGL, vr::ColorSpace_Auto};
-    vr::VROverlay()->SetOverlayTexture(*handle, &myTexture);
+    // Update the texture data
+    texture->setData(0, QOpenGLTexture::RGBA, QOpenGLTexture::UInt8, image.constBits());
+
+    // Ask steam VR to redraw the overlay
+    vr::VROverlay()->SetOverlayTexture(*handle, vrTexture);
+
+    // Build a new texture
+    // QOpenGLTexture *newTexture = new QOpenGLTexture(image.mirrored());
+
+
+
+    // Delete previously created textures
+    //texture->destroy();
+    //delete(texture);
+    //delete(vrTexture);
+
+    // Save reference to new objects
+    //texture = newTexture;
+    //vrTexture = newVrTexture;
 }
