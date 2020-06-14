@@ -21,10 +21,8 @@ class Overlay
     vr::VROverlayHandle_t *handle;
     vr::Texture_t *vrTexture = nullptr;
 
-    int width;
-    int height;
+    QImage captureImage();
 public:
-    const char *key;
     static void refreshAll();
 
     Overlay(const char *key, const char *url, int width, int height, vr::HmdMatrix34_t transform);
