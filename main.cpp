@@ -16,25 +16,18 @@ int main(int argc, char** argv) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication app(argc, argv);
 
-    new Overlay("twitch", "http://localhost:8080/ui/#/chatoverlays/twitch", 550, 300,
+    new Overlay("twitch", "http://ir-apps.kutu.ru/twitch-chat/chat.html?channel_id=53731598&bgOpacity=0&textShadow=1&reversedMessages=1&hideMessageAfter=30", 550, 300,
     {{
-         {1.0f, 0.0f, 0.0f, 0.3f},
-         {0.0f, 1.0f, 0.0f, -0.25f},
+         {1.0f, 0.0f, 0.0f, 0.02f},
+         {0.0f, 1.0f, 0.0f, -0.1f},
          {0.0f, 0.0f, 1.0f, -0.4f}
      }});
 
-    new Overlay("relatives", "http://localhost:8080/ui/#/overlays/relative", 450, 214,
+    new Overlay("racing", "http://localhost:8185/racing-overlay/?profileName=VR&profileId=181301e0-ae35-11ea-b3df-c9508a03a60b", 1920, 1080,
     {{
-         {1.0f, 0.0f, 0.0f, -0.3f},
-         {0.0f, 1.0f, 0.0f, -0.2f},
-         {0.0f, 0.0f, 1.0f, -0.4f}
-     }});
-
-    new Overlay("standings", "http://localhost:8080/ui/#/overlays/standings", 450, 300,
-    {{
-         {1.0f, 0.0f, 0.0f, -0.3f},
-         {0.0f, 1.0f, 0.0f, -0.35f},
-         {0.0f, 0.0f, 1.0f, -0.4f}
+         {5.0f, 0.0f, 0.0f, 0.0f},
+         {0.0f, 5.0f, 0.0f, -0.1f},
+         {0.0f, 0.0f, 5.0f, -0.4f}
      }});
 
     QTimer timer;

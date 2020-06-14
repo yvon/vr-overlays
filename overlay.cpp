@@ -33,6 +33,8 @@ Overlay::Overlay(const char *key, const char *url, int width, int height, vr::Hm
     vrTexture = new vr::Texture_t({(void*)(uintptr_t)texture->textureId(),
                                    vr::TextureType_OpenGL,
                                    vr::ColorSpace_Auto});
+
+    vr::VROverlay()->SetOverlayTexture(*handle, vrTexture);
 }
 
 void Overlay::refreshAll() {
